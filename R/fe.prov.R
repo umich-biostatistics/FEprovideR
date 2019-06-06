@@ -1,0 +1,64 @@
+
+fe.prov <- function(data, Y.char, Z.char, prov.char, tol=1e-5, null="median"){
+  #       data: a data frame sorted by providers with additional variable 'included',
+  #             with missing values imputed
+  #     Y.char: a character string as name of response variable
+  #     Z.char: a vector of character strings as names of covariates
+  #  prov.char: a character string as name of variable consisting of provider IDs
+  #        tol: a small positive number specifying stopping criterion of Newton-Raphson algorithm
+
+  data <- data[data$included==1,]
+  n.prov <- sapply(split(data[, Y.char], data[, prov.char]), length)
+  gamma.prov <- rep(0, length(n.prov))
+  Z <- as.matrix(data[,Z.char])
+  beta <- rep(0, NCOL(Z))
+
+  max.iter <- 10000
+  iter <- 0
+  bound <- 20
+  beta.max.diff <- 100 # initialize stop criterion
+  cat("Implementing Newton-Raphson algorithm for fixed provider effects model ...")
+
+  while (iter<=max.iter & beta.max.diff>=tol) {
+    iter <- iter + 1
+    cat(paste0("\n Iter ",iter,":"))
+    # provider effect
+    gamma.obs <- rep(gamma.prov, n.prov)
+    Z.beta <- Z%*%beta
+    p <- c(plogis(gamma.obs+Z.beta))
+    q <- 1-p; pq <- p*q
+    gamma.prov <- sapply(split(data[,Y.char]-p, data[,prov.char]), sum) /
+      sapply(split(pq, data[,prov.char]), sum) + gamma.prov
+    gamma.prov <- pmin(pmax(gamma.prov, -bound), bound)
+    gamma.obs <- rep(gamma.prov, n.prov)
+
+    # covar parameters
+    p <- plogis(gamma.obs+Z.beta)
+    q <- 1-p; pq <- p*q
+    beta.score <- t(Z)%*%(data[,Y.char]-p)
+    beta.info <- t(Z)%*%(c(pq)*Z)
+    beta.new <- beta + as.numeric(solve(beta.info)%*%beta.score) # pmin(pmax(, -bound), bound)
+    beta.max.diff <- max(abs(beta-beta.new)) # stopping criterion
+    beta <- beta.new
+    cat(paste0(" Inf norm of running diff in est covar coef is ",round(beta.max.diff,digits=8),";"))
+  }
+  cat(paste("\n Newton-Raphson algorithm converged after",iter,"iterations! \n"))
+  gamma.prov[gamma.prov==bound] <- Inf; gamma.prov[gamma.prov==-bound] <- -Inf
+  Z.beta <- as.matrix(data[,Z.char]) %*% beta
+  gamma.null <- ifelse(null=="median", median(gamma.prov),
+                       ifelse(class(null)=="numeric", null[1],
+                              stop("Argument 'null' NOT as required!",call.=F)))
+  Exp <- as.numeric(plogis(gamma.null+Z.beta)) # expected prob of readm within 30 days of discharge under null
+
+  df.prov <- data.frame(Obs=sapply(split(data[,Y.char],data[,prov.char]),sum),
+                        Exp=sapply(split(Exp,data[,prov.char]),sum))
+  df.prov$SRR <- df.prov$Obs / df.prov$Exp
+  df.prov$gamma <- gamma.prov
+  return(list(beta=beta, Obs=data[, Y.char], Exp=Exp, df.prov=df.prov))
+  #    beta: a vector of fixed effect estimates
+  #     Obs: a vector of responses for included providers
+  #     Exp: a vector of expected probs of readmission within 30 days of discharge
+  # df.prov: a data frame of provider-level number of observed number of readmissions within 30 days
+  #          expected number of readmissions within 30 days, a vector of SRRs, and a vector of
+  #          provider effect estimates for included providers (considered as a fixed effect)
+} # end of fe.prov
