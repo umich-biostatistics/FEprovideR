@@ -1,11 +1,60 @@
+#'
+#' Funnel plot for SRR (standardized readmission ratios)
+#'
+#' \code{funnel.SRR} produces and returns funnel plots for the analysis using discharge-specific
+#' and patient-specific inputs with provider ID.
+#'
+#' @param input.dis a \code{data.frame} consisting of discharge-specific inputs and provider ID
+#' @param input.prov a \code{data.frame} consisting of provider-specific inputs and provider ID
+#' @param target target standardized readmission ratio (SRR)
+#' @param alphas numeric vector of alpha levels of interest
+#' @param type string of length one containing the type of test performed. Currently options
+#' include "score", "exact", "FE.score", "FE.exact", "FERE.score", "FERE.exact"
+#' @param sigma.b sigma for random effects. Should only have value other than null
+#' if prefix "FERE." specified
+#' in \code{type=} argument
+#'
+#' @return Returns a \code{ggplot} object.
+#'
+#'
+#' @seealso \code{\link{fe.data.prep}},  \code{\link{fe.prov}},   \code{\link{test.fe.prov}},
+#' \code{\link{confint.fe.prov}}, \code{ggplot2}
+#'
+#' @references He, K., Kalbfleisch, J.D., Li, Y. and Li, Y., 2013. Evaluating hospital
+#' readmission rates in dialysis facilities; adjusting for hospital effects. Lifetime data
+#' analysis, 19(4), pp.490-512.
+#'
+#' @examples
+#' # Name input variables and other parameters
+#' tol <- 1e-5               # a small positive number specifying stopping criterion of Newton-Raphson algorithm
+#' Y.char <- 'Y'
+#' prov.char <- 'prov.ID'
+#' Z.char <- paste0('z', 1:3)
+#' data(hospital_prepared) # build in data set
+#' fe.ls <- fe.prov(hospital_prepared, Y.char, Z.char, prov.char, tol) # model fitting
+#'
+#'
+#' # Hypothesis tests
+#' null = "median"
+#' alpha <- 0.05             # significance level
+#' score.fe <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, test="score", null, alpha)
+#'
+#' # format input data for funnel plot
+#' input.dis <- data.frame(ID=hospital_prepared[hospital_prepared$included==1, prov.char], prob=fe.ls$Exp)
+#' input.prov <- data.frame(SRR=fe.ls$df.prov$SRR, flag=score.fe$flag)
+#'
+#' # render funnel plot
+#' target <- c(1)
+#' alphas = c(0.1, 0.05, 0.01)
+#' funnel.SRR(input.dis, input.prov, target, alphas, type="FE.score")
+#'
 
-funnel.SRR <- function(input.dis, input.prov, target=1, alphas=c(0.1, 0.05, 0.01), type="FE.score", file, sigma.b=NULL){
+funnel.SRR <- function(input.dis, input.prov, target=1, alphas=c(0.1, 0.05, 0.01), type="FE.score", sigma.b=NULL){
   # input.dis: a data frame consisting of discharge-specific inputs and provider ID
   # input.prov: a data frame consisting of provider-specific inputs ordered by provider ID
   # target
   # alphas
   # type
-  # file
   # sigma.b
   if (length(unique(input.dis$ID))!=NROW(input.prov))
     stop("Number of unique provider IDs NOT equal to length of indicator vector!",.call=F)
@@ -69,5 +118,4 @@ funnel.SRR <- function(input.dis, input.prov, target=1, alphas=c(0.1, 0.05, 0.01
     labs(linetype="Ctrl Limits", color="Flagging (%)") +
     guides(color=guide_legend(order=1), linetype=guide_legend(reverse=TRUE, order=2)) +
     geom_hline(yintercept=target, size=.6, linetype="dashed") # color="#F8766D"
-  ggsave(file, width=8, height=8)
 }

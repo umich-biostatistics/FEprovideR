@@ -7,7 +7,7 @@
 fe.prov(data, Y.char, Z.char, prov.char, tol = 1e-05, null = "median")
 }
 \arguments{
-\item{data}{prepared \code{data.frame}. Use \code{\link{fe.data.prep}}}
+\item{data}{prepared \code{data.frame}. Use \code{\link{fe.data.prep}} to prepare the raw data}
 
 \item{Y.char}{name of the response variable from \code{data} as a character string}
 
@@ -17,39 +17,44 @@ fe.prov(data, Y.char, Z.char, prov.char, tol = 1e-05, null = "median")
 
 \item{tol}{tolerance level for convergence. Default is \code{1e-5}}
 
-\item{null}{extra default parameter, usually median}
+\item{null}{use median for null comparison}
 }
 \value{
 A \code{List} object with the following attributes:
 \itemize{
 \item \code{beta:} a vector of fixed effect estimates
 \item \code{Obs:} a vector of responses for included providers
-\item \code{Exp:} a vector of expected probs of readmission within 30 days of discharge
+\item \code{Exp:} a vector of expected probabilities of readmission within 30 days of discharge
 \item \code{df.prov:}
-
+}
+\code{df.prov} is a \code{data.frame} of provider-level information with the following items:
+\itemize{
 \item \code{Obs:} provider-level observed number of readmissions within 30 days
 \item \code{Exp:} expected number of readmissions within 30 days
 \item \code{SRR:} standardized readmission ratios for each hospital
-\item \code{gamma:} a vector of provider effect estimates for included
+\item \code{gamma:} a vector of provider effect estimates for included hospitals
 }
 }
 \description{
 \code{fe.prov} fits a fixed-effect logistic model using structured profile
-likelihood algorithm. Standardized readmission ratios (SSRs) are also computed.
+likelihood algorithm. Standardized readmission ratios (SRRs) are also computed.
 }
 \examples{
-cutoff <- 10              # an integer as cutoff of facility (or provider) size with 10 as default
+# Name input variables and other parameters
 tol <- 1e-5               # a small positive number specifying stopping criterion of Newton-Raphson algorithm
-n <- 10000                # resample size, 10000 as default
-alpha <- 0.05             # significance level
 Y.char <- 'Y'
 prov.char <- 'prov.ID'
 Z.char <- paste0('z', 1:3)
-data.prepared <- data(hospital_prepared) # build in data set
-fe.ls <- fe.prov(data.prepared, Y.char, Z.char, prov.char, tol) # model fitting
+data(hospital_prepared) # build in data set
+fe.ls <- fe.prov(hospital_prepared, Y.char, Z.char, prov.char, tol) # model fitting
 
 }
+\references{
+He, K., Kalbfleisch, J.D., Li, Y. and Li, Y., 2013. Evaluating hospital
+readmission rates in dialysis facilities; adjusting for hospital effects. Lifetime data
+analysis, 19(4), pp.490-512.
+}
 \seealso{
-\code{\link{fe.data.prep}},  \code{\link{fe.prov}},   \code{\link{test.fe.prov}},
+\code{\link{fe.data.prep}},   \code{\link{test.fe.prov}},
 \code{\link{funnel.SRR}},   \code{\link{confint.fe.prov}}
 }

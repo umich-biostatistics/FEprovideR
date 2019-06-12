@@ -1,3 +1,48 @@
+#' Hypothesis tests for fe.prov model object
+#'
+#' \code{test.fe.prov} Conducts hypothesis tests for model parameter estimates.
+#' First fit a \code{fe.prov} model object.
+#'
+#' @param data prepared \code{data.frame}. Use \code{\link{fe.data.prep}}
+#' @param fe.ls fitted model object (fit using \code{fe.prov})
+#' @param Y.char Y.char name of the response variable from \code{data} as a character string
+#' @param Z.char Z.char names of covariates from \code{data} as vector of character strings
+#' @param prov.char name of provider IDs variable as a character string
+#' @param test string denoting hypothesis test to be conducted. Currently, options
+#' include "exact.binom", "exact.poisbinom", "exact.bootstrap", "score". The default
+#' is \code{test=score}
+#' @param null use median for null comparison
+#' @param alpha alpha level for the CIs
+#' @param n number of bootstrap draws
+#'
+#' @return Returns a \code{data.frame} of the results of the test for each provider
+#' with attributes:
+#' \itemize{
+#'   \item{flag:} Either "1" for p<alpha/2, "0" p<=1-alpha/2 and p<alpha/2, or "1" for neither
+#'   \item{p:} p-value for the hypothesis test of the model parameter
+#' }
+#'
+#' @seealso \code{\link{fe.data.prep}},  \code{\link{fe.prov}},
+#' \code{\link{funnel.SRR}},   \code{\link{confint.fe.prov}}
+#'
+#' @references He, K., Kalbfleisch, J.D., Li, Y. and Li, Y., 2013. Evaluating hospital
+#' readmission rates in dialysis facilities; adjusting for hospital effects. Lifetime data
+#' analysis, 19(4), pp.490-512.
+#'
+#' @examples
+#' # Name input variables and other parameters
+#' tol <- 1e-5               # a small positive number specifying stopping criterion of Newton-Raphson algorithm
+#' Y.char <- 'Y'
+#' prov.char <- 'prov.ID'
+#' Z.char <- paste0('z', 1:3)
+#' data(hospital_prepared) # build in data set
+#' fe.ls <- fe.prov(hospital_prepared, Y.char, Z.char, prov.char, tol) # model fitting
+#'
+#' # Hypothesis tests
+#' null = "median"
+#' alpha = 0.05
+#' score.fe <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, test="score", null, alpha)
+
 
 test.fe.prov <- function(data, fe.ls, Y.char, Z.char, prov.char, test="score", null="median", alpha=0.05, n=10000) {
 
@@ -55,4 +100,4 @@ test.fe.prov <- function(data, fe.ls, Y.char, Z.char, prov.char, test="score", n
                       FUN=function(x) exact.binom(x))
     return(data.frame(flag=factor(results[1,]), p=results[2,]))
   }
-} # end of test.fe.prov
+}

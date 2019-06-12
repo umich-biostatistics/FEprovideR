@@ -7,7 +7,7 @@
 \method{confint}{fe.prov}(data, fe.ls, Y.char, Z.char, prov.char, alpha)
 }
 \arguments{
-\item{data}{prepared \code{data.frame}. Use \code{\link{fe.data.prep}}}
+\item{data}{prepared \code{data.frame}. Use \code{\link{fe.data.prep}} to prepare the raw data}
 
 \item{fe.ls}{fitted model object (fit using \code{fe.prov})}
 
@@ -24,33 +24,27 @@ Returns a \code{data.frame} of gamma and SRR lower and upper CI bounds. Each row
 parameter, each column gives a different bound.
 }
 \description{
-\code{confint.fe.prov} computes the (1-alpha)% confidence interval for the fixed
-effect parameter estimates
+\code{confint.fe.prov} computes the (1-alpha)\% confidence intervals for the fixed
+effect parameter estimates.
 }
 \examples{
-## data simulation
-m <- 500
-prov.size <- pmax(round(rnorm(m, 50, 15)),11)
-gamma <- rnorm(m, log(3/7), 0.4)
-beta <- c(1,0.5,-1)
+# Name input variables and other parameters
+tol <- 1e-5               # a small positive number specifying stopping criterion of Newton-Raphson algorithm
 Y.char <- 'Y'
 prov.char <- 'prov.ID'
-Z.char <- paste0('z', 1:length(beta))
-data <- sim.fe.prov(m, prov.size, gamma, beta, Y.char, Z.char, prov.char)
-
-library(Matrix)
-library(poibin)
-library(ggplot2)
-cutoff <- 10              # an integer as cutoff of facility (or provider) size with 10 as default
-tol <- 1e-5               # a small positive number specifying stopping criterion of Newton-Raphson algorithm
-n <- 10000                # resample size, 10000 as default
-alpha <- 0.05             # significance level
-data.prepared <- fe.data.prep(data, Y.char, Z.char, prov.char, cutoff) # data preparation
-fe.ls <- fe.prov(data.prepared, Y.char, Z.char, prov.char, tol) # model fitting
+Z.char <- paste0('z', 1:3)
+data(hospital_prepared) # build in data set
+fe.ls <- fe.prov(hospital_prepared, Y.char, Z.char, prov.char, tol) # model fitting
 
 # confidence intervals
-confint.fe.prov(data.prepared, fe.ls, Y.char, Z.char, prov.char, alpha)
+alpha <- 0.05 # significance level
+confint.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, alpha)
 
+}
+\references{
+He, K., Kalbfleisch, J.D., Li, Y. and Li, Y., 2013. Evaluating hospital
+readmission rates in dialysis facilities; adjusting for hospital effects. Lifetime data
+analysis, 19(4), pp.490-512.
 }
 \seealso{
 \code{\link{fe.data.prep}},  \code{\link{fe.prov}},   \code{\link{test.fe.prov}},

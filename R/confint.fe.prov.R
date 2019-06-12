@@ -1,9 +1,9 @@
 #' Compute confidence intervals for fitted model
 #'
-#' \code{confint.fe.prov} computes the (1-alpha)% confidence interval for the fixed
-#' effect parameter estimates
+#' \code{confint.fe.prov} computes the (1-alpha)\% confidence intervals for the fixed
+#' effect parameter estimates.
 #'
-#' @param data prepared \code{data.frame}. Use \code{\link{fe.data.prep}}
+#' @param data prepared \code{data.frame}. Use \code{\link{fe.data.prep}} to prepare the raw data
 #' @param fe.ls fitted model object (fit using \code{fe.prov})
 #' @param Y.char Y.char name of the response variable from \code{data} as a character string
 #' @param Z.char Z.char names of covariates from \code{data} as vector of character strings
@@ -16,30 +16,24 @@
 #' @seealso \code{\link{fe.data.prep}},  \code{\link{fe.prov}},   \code{\link{test.fe.prov}},
 #' \code{\link{funnel.SRR}},   \code{\link{confint.fe.prov}}
 #'
+#' @references He, K., Kalbfleisch, J.D., Li, Y. and Li, Y., 2013. Evaluating hospital
+#' readmission rates in dialysis facilities; adjusting for hospital effects. Lifetime data
+#' analysis, 19(4), pp.490-512.
+#'
 #' @examples
-#' ## data simulation
-#' m <- 500
-#' prov.size <- pmax(round(rnorm(m, 50, 15)),11)
-#' gamma <- rnorm(m, log(3/7), 0.4)
-#' beta <- c(1,0.5,-1)
+#' # Name input variables and other parameters
+#' tol <- 1e-5               # a small positive number specifying stopping criterion of Newton-Raphson algorithm
 #' Y.char <- 'Y'
 #' prov.char <- 'prov.ID'
-#' Z.char <- paste0('z', 1:length(beta))
-#' data <- sim.fe.prov(m, prov.size, gamma, beta, Y.char, Z.char, prov.char)
-#'
-#' library(Matrix)
-#' library(poibin)
-#' library(ggplot2)
-#' cutoff <- 10              # an integer as cutoff of facility (or provider) size with 10 as default
-#' tol <- 1e-5               # a small positive number specifying stopping criterion of Newton-Raphson algorithm
-#' n <- 10000                # resample size, 10000 as default
-#' alpha <- 0.05             # significance level
-#' data.prepared <- fe.data.prep(data, Y.char, Z.char, prov.char, cutoff) # data preparation
-#' fe.ls <- fe.prov(data.prepared, Y.char, Z.char, prov.char, tol) # model fitting
+#' Z.char <- paste0('z', 1:3)
+#' data(hospital_prepared) # build in data set
+#' fe.ls <- fe.prov(hospital_prepared, Y.char, Z.char, prov.char, tol) # model fitting
 #'
 #' # confidence intervals
-#' confint.fe.prov(data.prepared, fe.ls, Y.char, Z.char, prov.char, alpha)
+#' alpha <- 0.05 # significance level
+#' confint.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, alpha)
 #'
+
 confint.fe.prov <- function(data, fe.ls, Y.char, Z.char, prov.char, alpha) {
 
   data <- data[data$included==1, ]

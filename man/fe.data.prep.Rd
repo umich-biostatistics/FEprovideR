@@ -21,6 +21,22 @@ fe.data.prep(data, Y.char, Z.char, prov.char, cutoff = 10)
 \code{fe.data.prep} prepares the data for model fitting with \code{fe.prov} by
 taking the data with missing values imputed.
 }
+\examples{
+data(hospital) # build in data set
+# Name input variables and other parameters
+cutoff <- 10              # an integer as cutoff of facility (or provider) size with 10 as default
+alpha <- 0.05             # significance level
+Y.char <- 'Y'
+prov.char <- 'prov.ID'
+Z.char <- paste0('z', 1:3)
+
+hospital_prepared <- fe.data.prep(hospital, Y.char, Z.char, prov.char, cutoff) # data preparation
+}
+\references{
+He, K., Kalbfleisch, J.D., Li, Y. and Li, Y., 2013. Evaluating hospital
+readmission rates in dialysis facilities; adjusting for hospital effects. Lifetime data
+analysis, 19(4), pp.490-512.
+}
 \seealso{
 \code{\link{fe.data.prep}},  \code{\link{fe.prov}},   \code{\link{test.fe.prov}},
 \code{\link{funnel.SRR}},   \code{\link{confint.fe.prov}}
