@@ -1,4 +1,28 @@
-
+#' Prepares data for model fitting (fe.prov)
+#'
+#' \code{fe.data.prep} prepares the data for model fitting with \code{fe.prov} by
+#' taking the data with missing values imputed.
+#'
+#' @param data a \code{data.frame} including response, provider ID, and covariates, with missing values imputed
+#' @param Y.char name of the response variable from \code{data} as a character string
+#' @param Z.char names of covariates from \code{data} as vector of character strings
+#' @param prov.char name of provider IDs variable as a character string
+#' @param cutoff cutoff of provider size as an interger, default value is 10
+#'
+#' @seealso \code{\link{fe.data.prep}},  \code{\link{fe.prov}},   \code{\link{test.fe.prov}},
+#' \code{\link{funnel.SRR}},   \code{\link{confint.fe.prov}}
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
 fe.data.prep <- function(data, Y.char, Z.char, prov.char, cutoff=10) {
   #       data: a data frame including response, provider ID, and
   #             covariates, with missing values imputed
@@ -82,4 +106,4 @@ fe.data.prep <- function(data, Y.char, Z.char, prov.char, cutoff=10) {
   #       data: a data frame sorted by provider IDs with additional variables 'included', 'no.readm', 'all.readm'
   #             and missing values imputed
 
-}  # end of fe.data.prep
+}

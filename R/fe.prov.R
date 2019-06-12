@@ -1,3 +1,45 @@
+#'
+#' Fit logistic fixed-effect model with high-dimensional predictors
+#'
+#' \code{fe.prov} fits a fixed-effect logistic model using structured profile
+#' likelihood algorithm. Standardized readmission ratios (SSRs) are also computed.
+#'
+#' @param data prepared \code{data.frame}. Use \code{\link{fe.data.prep}}
+#' @param Y.char name of the response variable from \code{data} as a character string
+#' @param Z.char names of covariates from \code{data} as vector of character strings
+#' @param prov.char name of provider IDs variable as a character string
+#' @param tol tolerance level for convergence. Default is \code{1e-5}
+#' @param null extra default parameter, usually median
+#'
+#' @return A \code{List} object with the following attributes:
+#' \itemize{
+#'   \item \code{beta:} a vector of fixed effect estimates
+#'   \item \code{Obs:} a vector of responses for included providers
+#'   \item \code{Exp:} a vector of expected probs of readmission within 30 days of discharge
+#'   \item \code{df.prov:}
+#'
+#'  \item \code{Obs:} provider-level observed number of readmissions within 30 days
+#'  \item \code{Exp:} expected number of readmissions within 30 days
+#'  \item \code{SRR:} standardized readmission ratios for each hospital
+#'  \item \code{gamma:} a vector of provider effect estimates for included
+#' }
+#'
+#'
+#' @seealso \code{\link{fe.data.prep}},  \code{\link{fe.prov}},   \code{\link{test.fe.prov}},
+#' \code{\link{funnel.SRR}},   \code{\link{confint.fe.prov}}
+#'
+#'
+#' @examples
+#' cutoff <- 10              # an integer as cutoff of facility (or provider) size with 10 as default
+#' tol <- 1e-5               # a small positive number specifying stopping criterion of Newton-Raphson algorithm
+#' n <- 10000                # resample size, 10000 as default
+#' alpha <- 0.05             # significance level
+#' Y.char <- 'Y'
+#' prov.char <- 'prov.ID'
+#' Z.char <- paste0('z', 1:3)
+#' data.prepared <- data(hospital_prepared) # build in data set
+#' fe.ls <- fe.prov(data.prepared, Y.char, Z.char, prov.char, tol) # model fitting
+#'
 
 fe.prov <- function(data, Y.char, Z.char, prov.char, tol=1e-5, null="median"){
   #       data: a data frame sorted by providers with additional variable 'included',
@@ -61,4 +103,4 @@ fe.prov <- function(data, Y.char, Z.char, prov.char, tol=1e-5, null="median"){
   # df.prov: a data frame of provider-level number of observed number of readmissions within 30 days
   #          expected number of readmissions within 30 days, a vector of SRRs, and a vector of
   #          provider effect estimates for included providers (considered as a fixed effect)
-} # end of fe.prov
+}

@@ -1,13 +1,15 @@
 Package: FEprovideR
-Title: What the Package Does (One Line, Title Case)
+Title: Fixed effects logistic model with high-dimensional parameters
 Version: 0.0.0.9000
-Authors@R: 
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: What license it uses
+Authors@R: c(
+    person(given = "Kevin(Zhi)", family = "He", role = c("aut"), email = "kevinhe@umich.edu"),
+    person(given = "Wenbo", family = "Wu", role = c("aut"), email = "wenbowu@umich.edu"),
+    person(given = "Michael", family = "Kleinsasser", role = c("cre"), email = "mkleinsa@umich.edu"))
+Description: A stuctured profile likelihood algorithm for the logistic fixed effects model and an aproximate EM algorithm for the logistic mixed effects model. 
+License: GPL-2
+Imports: ggplot2, Matrix, poibin
 Encoding: UTF-8
 LazyData: true
+BugReports: https://github.com/umich-biostatistics/FEprovideR/issues
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.1
