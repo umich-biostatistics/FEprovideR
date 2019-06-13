@@ -1,11 +1,11 @@
 Package: FEprovideR
-Title: Fixed effects logistic model with high-dimensional parameters
+Title: Fixed Effects Logistic Model with High-Dimensional Parameters
 Version: 0.0.0.9000
 Authors@R: c(
     person(given = "Kevin(Zhi)", family = "He", role = c("aut"), email = "kevinhe@umich.edu"),
     person(given = "Wenbo", family = "Wu", role = c("aut"), email = "wenbowu@umich.edu"),
     person(given = "Michael", family = "Kleinsasser", role = c("cre"), email = "mkleinsa@umich.edu"))
-Description: A stuctured profile likelihood algorithm for the logistic fixed effects model and an aproximate EM algorithm for the logistic mixed effects model. 
+Description: A structured profile likelihood algorithm for the logistic fixed effects model and an approximate EM algorithm for the logistic mixed effects model. 
 License: GPL-2
 Imports: ggplot2, Matrix, poibin
 Encoding: UTF-8
