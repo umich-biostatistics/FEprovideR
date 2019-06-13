@@ -27,6 +27,10 @@
 #' Z.char <- paste0('z', 1:3)
 #'
 #' hospital_prepared <- fe.data.prep(hospital, Y.char, Z.char, prov.char, cutoff) # data preparation
+#'
+#' @export fe.data.prep
+#'
+#' @importFrom Matrix rankMatrix
 
 fe.data.prep <- function(data, Y.char, Z.char, prov.char, cutoff=10) {
   #       data: a data frame including response, provider ID, and

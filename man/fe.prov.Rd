@@ -20,7 +20,7 @@ fe.prov(data, Y.char, Z.char, prov.char, tol = 1e-05, null = "median")
 \item{null}{use median for null comparison}
 }
 \value{
-A \code{List} object with the following attributes:
+An object of class \code{fe.prov}, which is just a \code{List} object with the following named elements:
 \itemize{
 \item \code{beta:} a vector of fixed effect estimates
 \item \code{Obs:} a vector of responses for included providers
@@ -41,7 +41,9 @@ likelihood algorithm. Standardized readmission ratios (SRRs) are also computed.
 }
 \examples{
 # Name input variables and other parameters
-tol <- 1e-5               # a small positive number specifying stopping criterion of Newton-Raphson algorithm
+# a small positive number specifying stopping
+# criterion of Newton-Raphson algorithm
+tol <- 1e-5
 Y.char <- 'Y'
 prov.char <- 'prov.ID'
 Z.char <- paste0('z', 1:3)

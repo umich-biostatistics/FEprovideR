@@ -26,7 +26,9 @@
 #'
 #' @examples
 #' # Name input variables and other parameters
-#' tol <- 1e-5               # a small positive number specifying stopping criterion of Newton-Raphson algorithm
+#' # a small positive number specifying stopping
+#' # criterion of Newton-Raphson algorithm
+#' tol <- 1e-5
 #' Y.char <- 'Y'
 #' prov.char <- 'prov.ID'
 #' Z.char <- paste0('z', 1:3)
@@ -37,10 +39,12 @@
 #' # Hypothesis tests
 #' null = "median"
 #' alpha <- 0.05             # significance level
-#' score.fe <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, test="score", null, alpha)
+#' score.fe <- test.fe.prov(hospital_prepared, fe.ls, Y.char,
+#'                          Z.char, prov.char, test="score", null, alpha)
 #'
 #' # format input data for funnel plot
-#' input.dis <- data.frame(ID=hospital_prepared[hospital_prepared$included==1, prov.char], prob=fe.ls$Exp)
+#' input.dis <- data.frame(ID=hospital_prepared[hospital_prepared$included==1, prov.char],
+#'                         prob=fe.ls$Exp)
 #' input.prov <- data.frame(SRR=fe.ls$df.prov$SRR, flag=score.fe$flag)
 #'
 #' # render funnel plot
@@ -48,6 +52,11 @@
 #' alphas = c(0.1, 0.05, 0.01)
 #' funnel.SRR(input.dis, input.prov, target, alphas, type="FE.score")
 #'
+#' @export funnel.SRR
+#'
+#' @importFrom poibin qpoibin
+#' @importFrom poibin dpoibin
+#' @import ggplot2
 
 funnel.SRR <- function(input.dis, input.prov, target=1, alphas=c(0.1, 0.05, 0.01), type="FE.score", sigma.b=NULL){
   # input.dis: a data frame consisting of discharge-specific inputs and provider ID
@@ -105,6 +114,13 @@ funnel.SRR <- function(input.dis, input.prov, target=1, alphas=c(0.1, 0.05, 0.01
   labs.linetype <- paste0((1-alphas)*100,"%")
   values.linetype <- c('dashed','dotted','dotdash','longdash','twodash')[1:length(alphas)]
   values.linetype[alphas==0.05] <- 'solid'
+
+  # explicitly store ggplot arguments so they play nice with R CMD Check
+  flag <- data$flag
+  indicator <- data$indicator
+  lower <- data$lower
+  upper <- data$upper
+  precision <- data$precision
 
   ggplot() + theme_classic() +
     theme(legend.justification=c(1,1), legend.position=c(1,1), legend.title=element_text(face="bold")) +

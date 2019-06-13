@@ -3,12 +3,12 @@
 #' \code{confint.fe.prov} computes the (1-alpha)\% confidence intervals for the fixed
 #' effect parameter estimates.
 #'
+#' @param object fitted model object (fit using \code{fe.prov})
+#' @param level confidence level (default is \code{0.95})
 #' @param data prepared \code{data.frame}. Use \code{\link{fe.data.prep}} to prepare the raw data
-#' @param fe.ls fitted model object (fit using \code{fe.prov})
 #' @param Y.char Y.char name of the response variable from \code{data} as a character string
 #' @param Z.char Z.char names of covariates from \code{data} as vector of character strings
 #' @param prov.char name of provider IDs variable as a character string
-#' @param alpha alpha level for the CIs
 #'
 #' @return Returns a \code{data.frame} of gamma and SRR lower and upper CI bounds. Each row is a
 #' parameter, each column gives a different bound.
@@ -22,7 +22,9 @@
 #'
 #' @examples
 #' # Name input variables and other parameters
-#' tol <- 1e-5               # a small positive number specifying stopping criterion of Newton-Raphson algorithm
+#' # a small positive number specifying stopping
+#' # criterion of Newton-Raphson algorithm
+#' tol <- 1e-5
 #' Y.char <- 'Y'
 #' prov.char <- 'prov.ID'
 #' Z.char <- paste0('z', 1:3)
@@ -31,11 +33,17 @@
 #'
 #' # confidence intervals
 #' alpha <- 0.05 # significance level
-#' confint.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, alpha)
+#' confint.fe.prov(fe.ls, level = 0.95, hospital_prepared, Y.char, Z.char, prov.char)
 #'
+#' @export confint.fe.prov
+#' @importFrom poibin ppoibin
+#' @importFrom poibin dpoibin
+#' @export
 
-confint.fe.prov <- function(data, fe.ls, Y.char, Z.char, prov.char, alpha) {
+confint.fe.prov <- function(object, parm, level, data, Y.char, Z.char, prov.char) {
 
+  fe.ls <- object
+  alpha <- 1 - level
   data <- data[data$included==1, ]
   df.prov <- fe.ls$df.prov
   gamma <- df.prov$gamma; names(gamma) <- rownames(df.prov)

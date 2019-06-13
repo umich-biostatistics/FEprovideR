@@ -31,7 +31,9 @@
 #'
 #' @examples
 #' # Name input variables and other parameters
-#' tol <- 1e-5               # a small positive number specifying stopping criterion of Newton-Raphson algorithm
+#' # a small positive number specifying stopping
+#' # criterion of Newton-Raphson algorithm
+#' tol <- 1e-5
 #' Y.char <- 'Y'
 #' prov.char <- 'prov.ID'
 #' Z.char <- paste0('z', 1:3)
@@ -41,7 +43,13 @@
 #' # Hypothesis tests
 #' null = "median"
 #' alpha = 0.05
-#' score.fe <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, test="score", null, alpha)
+#' score.fe <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char,
+#'                          prov.char, test="score", null, alpha)
+#'
+#' @export test.fe.prov
+#'
+#' @importFrom poibin ppoibin
+#' @import stats
 
 
 test.fe.prov <- function(data, fe.ls, Y.char, Z.char, prov.char, test="score", null="median", alpha=0.05, n=10000) {
@@ -70,7 +78,7 @@ test.fe.prov <- function(data, fe.ls, Y.char, Z.char, prov.char, test="score", n
     data$probs <- plogis(gamma.null + unname(as.matrix(data[, Z.char])) %*% beta)
     z.score <- sapply(split(data[,Y.char]-data$probs,data[,prov.char]),sum) /
       sqrt(sapply(split(data$probs*(1-data$probs),data[,prov.char]),sum))
-    p <- pnorm(z.score, lower=F)
+    p <- pnorm(z.score, lower.tail=F)
     flag <- ifelse(p<alpha/2, 1, ifelse(p<=1-alpha/2, 0, -1))
     p.val <- 2 * pmin(p, 1-p)
     return(data.frame(flag=factor(flag), p=p.val, row.names=unique(data[, prov.char])))

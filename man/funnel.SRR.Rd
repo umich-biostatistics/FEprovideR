@@ -32,7 +32,9 @@ and patient-specific inputs with provider ID.
 }
 \examples{
 # Name input variables and other parameters
-tol <- 1e-5               # a small positive number specifying stopping criterion of Newton-Raphson algorithm
+# a small positive number specifying stopping
+# criterion of Newton-Raphson algorithm
+tol <- 1e-5
 Y.char <- 'Y'
 prov.char <- 'prov.ID'
 Z.char <- paste0('z', 1:3)
@@ -43,10 +45,12 @@ fe.ls <- fe.prov(hospital_prepared, Y.char, Z.char, prov.char, tol) # model fitt
 # Hypothesis tests
 null = "median"
 alpha <- 0.05             # significance level
-score.fe <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, test="score", null, alpha)
+score.fe <- test.fe.prov(hospital_prepared, fe.ls, Y.char,
+                         Z.char, prov.char, test="score", null, alpha)
 
 # format input data for funnel plot
-input.dis <- data.frame(ID=hospital_prepared[hospital_prepared$included==1, prov.char], prob=fe.ls$Exp)
+input.dis <- data.frame(ID=hospital_prepared[hospital_prepared$included==1, prov.char],
+                        prob=fe.ls$Exp)
 input.prov <- data.frame(SRR=fe.ls$df.prov$SRR, flag=score.fe$flag)
 
 # render funnel plot

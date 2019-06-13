@@ -12,7 +12,7 @@
 #' @param tol tolerance level for convergence. Default is \code{1e-5}
 #' @param null use median for null comparison
 #'
-#' @return A \code{List} object with the following attributes:
+#' @return An object of class \code{fe.prov}, which is just a \code{List} object with the following named elements:
 #' \itemize{
 #'   \item \code{beta:} a vector of fixed effect estimates
 #'   \item \code{Obs:} a vector of responses for included providers
@@ -37,12 +37,16 @@
 #'
 #' @examples
 #' # Name input variables and other parameters
-#' tol <- 1e-5               # a small positive number specifying stopping criterion of Newton-Raphson algorithm
+#' # a small positive number specifying stopping
+#' # criterion of Newton-Raphson algorithm
+#' tol <- 1e-5
 #' Y.char <- 'Y'
 #' prov.char <- 'prov.ID'
 #' Z.char <- paste0('z', 1:3)
 #' data(hospital_prepared) # build in data set
 #' fe.ls <- fe.prov(hospital_prepared, Y.char, Z.char, prov.char, tol) # model fitting
+#'
+#' @export fe.prov
 #'
 
 fe.prov <- function(data, Y.char, Z.char, prov.char, tol=1e-5, null="median"){
@@ -100,7 +104,7 @@ fe.prov <- function(data, Y.char, Z.char, prov.char, tol=1e-5, null="median"){
                         Exp=sapply(split(Exp,data[,prov.char]),sum))
   df.prov$SRR <- df.prov$Obs / df.prov$Exp
   df.prov$gamma <- gamma.prov
-  return(list(beta=beta, Obs=data[, Y.char], Exp=Exp, df.prov=df.prov))
+  return(structure(list(beta=beta, Obs=data[, Y.char], Exp=Exp, df.prov=df.prov), class = "fe.prov"))
   #    beta: a vector of fixed effect estimates
   #     Obs: a vector of responses for included providers
   #     Exp: a vector of expected probs of readmission within 30 days of discharge
@@ -108,3 +112,5 @@ fe.prov <- function(data, Y.char, Z.char, prov.char, tol=1e-5, null="median"){
   #          expected number of readmissions within 30 days, a vector of SRRs, and a vector of
   #          provider effect estimates for included providers (considered as a fixed effect)
 }
+
+

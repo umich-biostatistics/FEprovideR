@@ -4,20 +4,20 @@
 \alias{confint.fe.prov}
 \title{Compute confidence intervals for fitted model}
 \usage{
-\method{confint}{fe.prov}(data, fe.ls, Y.char, Z.char, prov.char, alpha)
+\method{confint}{fe.prov}(object, level, data, Y.char, Z.char, prov.char)
 }
 \arguments{
-\item{data}{prepared \code{data.frame}. Use \code{\link{fe.data.prep}} to prepare the raw data}
+\item{object}{fitted model object (fit using \code{fe.prov})}
 
-\item{fe.ls}{fitted model object (fit using \code{fe.prov})}
+\item{level}{confidence level (default is \code{0.95})}
+
+\item{data}{prepared \code{data.frame}. Use \code{\link{fe.data.prep}} to prepare the raw data}
 
 \item{Y.char}{Y.char name of the response variable from \code{data} as a character string}
 
 \item{Z.char}{Z.char names of covariates from \code{data} as vector of character strings}
 
 \item{prov.char}{name of provider IDs variable as a character string}
-
-\item{alpha}{alpha level for the CIs}
 }
 \value{
 Returns a \code{data.frame} of gamma and SRR lower and upper CI bounds. Each row is a
@@ -29,7 +29,9 @@ effect parameter estimates.
 }
 \examples{
 # Name input variables and other parameters
-tol <- 1e-5               # a small positive number specifying stopping criterion of Newton-Raphson algorithm
+# a small positive number specifying stopping
+# criterion of Newton-Raphson algorithm
+tol <- 1e-5
 Y.char <- 'Y'
 prov.char <- 'prov.ID'
 Z.char <- paste0('z', 1:3)
@@ -38,7 +40,7 @@ fe.ls <- fe.prov(hospital_prepared, Y.char, Z.char, prov.char, tol) # model fitt
 
 # confidence intervals
 alpha <- 0.05 # significance level
-confint.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, alpha)
+confint.fe.prov(fe.ls, level = 0.95, hospital_prepared, Y.char, Z.char, prov.char)
 
 }
 \references{

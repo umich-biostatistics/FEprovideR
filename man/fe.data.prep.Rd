@@ -31,6 +31,7 @@ prov.char <- 'prov.ID'
 Z.char <- paste0('z', 1:3)
 
 hospital_prepared <- fe.data.prep(hospital, Y.char, Z.char, prov.char, cutoff) # data preparation
+
 }
 \references{
 He, K., Kalbfleisch, J.D., Li, Y. and Li, Y., 2013. Evaluating hospital

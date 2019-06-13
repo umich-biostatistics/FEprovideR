@@ -42,7 +42,9 @@ First fit a \code{fe.prov} model object.
 }
 \examples{
 # Name input variables and other parameters
-tol <- 1e-5               # a small positive number specifying stopping criterion of Newton-Raphson algorithm
+# a small positive number specifying stopping
+# criterion of Newton-Raphson algorithm
+tol <- 1e-5
 Y.char <- 'Y'
 prov.char <- 'prov.ID'
 Z.char <- paste0('z', 1:3)
@@ -52,7 +54,9 @@ fe.ls <- fe.prov(hospital_prepared, Y.char, Z.char, prov.char, tol) # model fitt
 # Hypothesis tests
 null = "median"
 alpha = 0.05
-score.fe <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, test="score", null, alpha)
+score.fe <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char,
+                         prov.char, test="score", null, alpha)
+
 }
 \references{
 He, K., Kalbfleisch, J.D., Li, Y. and Li, Y., 2013. Evaluating hospital
