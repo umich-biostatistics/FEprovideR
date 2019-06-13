@@ -24,11 +24,13 @@ if prefix "FERE." specified
 in \code{type=} argument}
 }
 \value{
-Returns a \code{ggplot} object.
+Returns a \code{ggplot} object. Unless stored in a new object,
+will be printed automatically.
 }
 \description{
 \code{funnel.SRR} produces and returns funnel plots for the analysis using discharge-specific
-and patient-specific inputs with provider ID.
+and patient-specific inputs with provider ID. Go to
+\href{https://github.com/umich-biostatistics/FEprovideR}{Github} for a tutorial.
 }
 \examples{
 # Name input variables and other parameters

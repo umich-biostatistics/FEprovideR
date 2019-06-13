@@ -1,7 +1,8 @@
 #' Hypothesis tests for fe.prov model object
 #'
 #' \code{test.fe.prov} Conducts hypothesis tests for model parameter estimates.
-#' First fit a \code{fe.prov} model object.
+#' First fit a \code{fe.prov} model object. Go to
+#' \href{https://github.com/umich-biostatistics/FEprovideR}{Github} for a tutorial.
 #'
 #' @param data prepared \code{data.frame}. Use \code{\link{fe.data.prep}}
 #' @param fe.ls fitted model object (fit using \code{fe.prov})

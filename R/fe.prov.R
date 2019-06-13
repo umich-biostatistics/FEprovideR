@@ -3,6 +3,8 @@
 #'
 #' \code{fe.prov} fits a fixed-effect logistic model using structured profile
 #' likelihood algorithm. Standardized readmission ratios (SRRs) are also computed.
+#' Go to \href{https://github.com/umich-biostatistics/FEprovideR}{Github} for
+#' a tutorial.
 #'
 #'
 #' @param data prepared \code{data.frame}. Use \code{\link{fe.data.prep}} to prepare the raw data

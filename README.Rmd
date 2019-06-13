@@ -35,7 +35,7 @@ This tutorial simulates a data set to demonstrate the functions provided by FRpr
 
 ```{r example, eval=FALSE}
 # load the package
-#library(FEprovideR)
+# library(FEprovideR)
 ## basic example code
 
 # other imports
@@ -58,37 +58,49 @@ Z.char <- paste0('z', 1:length(beta))
 data <- sim.fe.prov(m, prov.size, gamma, beta, Y.char, Z.char, prov.char)
 ```
 
+This data is also available in the included data sets that come with the package.
+To use the included data, run:
+
+```{r, eval=FALSE}
+data(hospital)            # raw data
+data(hospital_prepared)   # processed data
+```
+
+
 Now, set relevant parameters and fit a model to the prepared data:
 
 ```{r example.fit, eval=FALSE}
-cutoff <- 10              # an integer as cutoff of facility (or provider) size with 10 as default
-tol <- 1e-5               # a small positive number specifying stopping criterion of Newton-Raphson algorithm
-n <- 10000                # resample size, 10000 as default
-alpha <- 0.05             # significance level
-data.prepared <- fe.data.prep(data, Y.char, Z.char, prov.char, cutoff) # data preparation
-fe.ls <- fe.prov(data.prepared, Y.char, Z.char, prov.char, tol) # model fitting
+# a small positive number specifying stopping criterion of Newton-Raphson algorithm
+tol <- 1e-5  
+# Name input variables and other parameters
+Y.char <- 'Y'
+prov.char <- 'prov.ID'
+Z.char <- paste0('z', 1:3)
+data(hospital_prepared) # build in data set
+fe.ls <- fe.prov(hospital_prepared, Y.char, Z.char, prov.char, tol) # model fitting
 ```
 
-Conduct hypothesis tests on the estimated standardized readmission ratios (SSR):
+Conduct hypothesis tests on the estimated standardized readmission ratios (SSRs):
 
 ```{r example.hypothesis.testing, eval=FALSE}
 # hypothesis testing
 null <- "median"
-score.fe <- test.fe.prov(data.prepared, fe.ls, Y.char, Z.char, prov.char, test="score", null, alpha)
-exact.pb <- test.fe.prov(data.prepared, fe.ls, Y.char, Z.char, prov.char, test="exact.poisbinom", null, alpha)
-exact.bs <- test.fe.prov(data.prepared, fe.ls, Y.char, Z.char, prov.char, test="exact.bootstrap", null, alpha, n)
-exact.binom <- test.fe.prov(data.prepared, fe.ls, Y.char, Z.char, prov.char, test="exact.binom", null="median", alpha)
+score.fe <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, test="score", null, alpha)
+exact.pb <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, test="exact.poisbinom", null, alpha)
+exact.bs <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, test="exact.bootstrap", null, alpha, n)
+exact.binom <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, test="exact.binom", null="median", alpha)
 ```
 
-Compute confidence intervals for the estimated SSR's:
+Compute confidence intervals for the estimated SSRs:
 
 ```{r example.confindence.intervals, eval=FALSE}
 # confidence intervals
-confint.df <- confint.fe.prov(data.prepared, fe.ls, Y.char, Z.char, prov.char, alpha)
-confint.df <- confint.fe.prov(data.prepared, fe.ls, Y.char, Z.char, prov.char, alpha = 0.1)
+confint.df <- confint.fe.prov(fe.ls, parm = "all", level = 0.95, hospital_prepared, Y.char, Z.char, prov.char)
+confint.df <- confint.fe.prov(fe.ls, parm = "all", level = 0.99, hospital_prepared, Y.char, Z.char, prov.char)
+confint.df <- confint.fe.prov(fe.ls, parm = "all", level = 0.90, hospital_prepared, Y.char, Z.char, prov.char)
 ```
 
-## Funnel plots for SSR
+## Funnel plots for SRRs (Standardized readmission ratios)
 
 ```{r funnel.plot.prep, eval=FALSE}
 # Prepare funnel plot inputs
@@ -100,16 +112,15 @@ input.dis <- data.frame(ID=data.prepared[data.prepared$included==1, prov.char], 
 Score test based funnel plot:
 
 ```{r funnel.score.test, eval=FALSE}
-# file is saved to working directory
 input.prov <- data.frame(SRR=fe.ls$df.prov$SRR, flag=score.fe$flag)
-funnel.SRR(input.dis, input.prov, target, alphas, type="FE.score", file="./SRR_funnel_fe_score.pdf")
+funnel.SRR(input.dis, input.prov, target, alphas, type="FE.score")
 ```
 
 Exact test based funnel plot:
 
 ```{r funnel.exact.test, eval=FALSE}
 input.prov <- data.frame(SRR=fe.ls$df.prov$SRR, flag=exact.pb$flag)
-funnel.SRR(input.dis, input.prov, target, alphas, type="FE.exact", file="./SRR_funnel_fe_exact.pdf")
+funnel.SRR(input.dis, input.prov, target, alphas, type="FE.score")
 ```
 
 

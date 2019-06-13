@@ -38,7 +38,8 @@ with attributes:
 }
 \description{
 \code{test.fe.prov} Conducts hypothesis tests for model parameter estimates.
-First fit a \code{fe.prov} model object.
+First fit a \code{fe.prov} model object. Go to
+\href{https://github.com/umich-biostatistics/FEprovideR}{Github} for a tutorial.
 }
 \examples{
 # Name input variables and other parameters

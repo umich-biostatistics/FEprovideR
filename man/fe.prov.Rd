@@ -38,6 +38,8 @@ An object of class \code{fe.prov}, which is just a \code{List} object with the f
 \description{
 \code{fe.prov} fits a fixed-effect logistic model using structured profile
 likelihood algorithm. Standardized readmission ratios (SRRs) are also computed.
+Go to \href{https://github.com/umich-biostatistics/FEprovideR}{Github} for
+a tutorial.
 }
 \examples{
 # Name input variables and other parameters

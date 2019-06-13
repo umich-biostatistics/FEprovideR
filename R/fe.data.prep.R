@@ -1,7 +1,8 @@
 #' Prepares data for model fitting (fe.prov)
 #'
 #' \code{fe.data.prep} prepares the data for model fitting with \code{fe.prov} by
-#' taking the data with missing values imputed.
+#' taking the data with missing values imputed. Go to
+#' \href{https://github.com/umich-biostatistics/FEprovideR}{Github} for a tutorial.
 #'
 #' @param data a \code{data.frame} including response, provider ID, and covariates, with missing values imputed
 #' @param Y.char name of the response variable from \code{data} as a character string
@@ -16,6 +17,8 @@
 #' readmission rates in dialysis facilities; adjusting for hospital effects. Lifetime data
 #' analysis, 19(4), pp.490-512.
 #'
+#' @return \code{data.frame}: a data frame sorted by provider IDs with additional
+#' variables 'included', 'no.readm', 'all.readm' and missing values imputed.
 #'
 #' @examples
 #' data(hospital) # build in data set

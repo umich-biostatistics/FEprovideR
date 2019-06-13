@@ -2,7 +2,8 @@
 #' Funnel plot for SRR (standardized readmission ratios)
 #'
 #' \code{funnel.SRR} produces and returns funnel plots for the analysis using discharge-specific
-#' and patient-specific inputs with provider ID.
+#' and patient-specific inputs with provider ID. Go to
+#' \href{https://github.com/umich-biostatistics/FEprovideR}{Github} for a tutorial.
 #'
 #' @param input.dis a \code{data.frame} consisting of discharge-specific inputs and provider ID
 #' @param input.prov a \code{data.frame} consisting of provider-specific inputs and provider ID
@@ -14,7 +15,8 @@
 #' if prefix "FERE." specified
 #' in \code{type=} argument
 #'
-#' @return Returns a \code{ggplot} object.
+#' @return Returns a \code{ggplot} object. Unless stored in a new object,
+#' will be printed automatically.
 #'
 #'
 #' @seealso \code{\link{fe.data.prep}},  \code{\link{fe.prov}},   \code{\link{test.fe.prov}},

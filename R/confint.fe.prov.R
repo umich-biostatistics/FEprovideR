@@ -1,14 +1,18 @@
 #' Compute confidence intervals for fitted model
 #'
 #' \code{confint.fe.prov} computes the (1-alpha)\% confidence intervals for the fixed
-#' effect parameter estimates.
+#' effect parameter estimates. Go to
+#' \href{https://github.com/umich-biostatistics/FEprovideR}{Github} for a tutorial.
 #'
 #' @param object fitted model object (fit using \code{fe.prov})
+#' @param parm parameter names. Since their are so many parameters, the default is
+#'  \code{"all"}, which is currently the only option available
 #' @param level confidence level (default is \code{0.95})
 #' @param data prepared \code{data.frame}. Use \code{\link{fe.data.prep}} to prepare the raw data
 #' @param Y.char Y.char name of the response variable from \code{data} as a character string
 #' @param Z.char Z.char names of covariates from \code{data} as vector of character strings
 #' @param prov.char name of provider IDs variable as a character string
+#' @param ... extra arguments to be passed to confint
 #'
 #' @return Returns a \code{data.frame} of gamma and SRR lower and upper CI bounds. Each row is a
 #' parameter, each column gives a different bound.
@@ -32,16 +36,16 @@
 #' fe.ls <- fe.prov(hospital_prepared, Y.char, Z.char, prov.char, tol) # model fitting
 #'
 #' # confidence intervals
-#' alpha <- 0.05 # significance level
-#' confint.fe.prov(fe.ls, level = 0.95, hospital_prepared, Y.char, Z.char, prov.char)
+#' confint.fe.prov(fe.ls, parm = "all", level = 0.95, hospital_prepared, Y.char, Z.char, prov.char)
 #'
 #' @export confint.fe.prov
 #' @importFrom poibin ppoibin
 #' @importFrom poibin dpoibin
 #' @export
 
-confint.fe.prov <- function(object, parm, level, data, Y.char, Z.char, prov.char) {
-
+confint.fe.prov <- function(object, parm = "all", level = 0.95, data, Y.char, Z.char, prov.char,...) {
+  if(!(parm == "all")) stop("This method is only implemented for all parameters.
+                            You cannot get CI's for a subset.")
   fe.ls <- object
   alpha <- 1 - level
   data <- data[data$included==1, ]

@@ -4,10 +4,14 @@
 \alias{confint.fe.prov}
 \title{Compute confidence intervals for fitted model}
 \usage{
-\method{confint}{fe.prov}(object, level, data, Y.char, Z.char, prov.char)
+\method{confint}{fe.prov}(object, parm = "all", level = 0.95, data,
+  Y.char, Z.char, prov.char, ...)
 }
 \arguments{
 \item{object}{fitted model object (fit using \code{fe.prov})}
+
+\item{parm}{parameter names. Since their are so many parameters, the default is
+\code{"all"}, which is currently the only option available}
 
 \item{level}{confidence level (default is \code{0.95})}
 
@@ -18,6 +22,8 @@
 \item{Z.char}{Z.char names of covariates from \code{data} as vector of character strings}
 
 \item{prov.char}{name of provider IDs variable as a character string}
+
+\item{...}{extra arguments to be passed to confint}
 }
 \value{
 Returns a \code{data.frame} of gamma and SRR lower and upper CI bounds. Each row is a
@@ -25,7 +31,8 @@ parameter, each column gives a different bound.
 }
 \description{
 \code{confint.fe.prov} computes the (1-alpha)\% confidence intervals for the fixed
-effect parameter estimates.
+effect parameter estimates. Go to
+\href{https://github.com/umich-biostatistics/FEprovideR}{Github} for a tutorial.
 }
 \examples{
 # Name input variables and other parameters
@@ -39,8 +46,7 @@ data(hospital_prepared) # build in data set
 fe.ls <- fe.prov(hospital_prepared, Y.char, Z.char, prov.char, tol) # model fitting
 
 # confidence intervals
-alpha <- 0.05 # significance level
-confint.fe.prov(fe.ls, level = 0.95, hospital_prepared, Y.char, Z.char, prov.char)
+confint.fe.prov(fe.ls, parm = "all", level = 0.95, hospital_prepared, Y.char, Z.char, prov.char)
 
 }
 \references{

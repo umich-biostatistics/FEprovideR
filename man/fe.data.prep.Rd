@@ -17,9 +17,14 @@ fe.data.prep(data, Y.char, Z.char, prov.char, cutoff = 10)
 
 \item{cutoff}{cutoff of provider size as an interger, default value is 10}
 }
+\value{
+\code{data.frame}: a data frame sorted by provider IDs with additional
+variables 'included', 'no.readm', 'all.readm' and missing values imputed.
+}
 \description{
 \code{fe.data.prep} prepares the data for model fitting with \code{fe.prov} by
-taking the data with missing values imputed.
+taking the data with missing values imputed. Go to
+\href{https://github.com/umich-biostatistics/FEprovideR}{Github} for a tutorial.
 }
 \examples{
 data(hospital) # build in data set
