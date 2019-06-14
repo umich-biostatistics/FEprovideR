@@ -35,8 +35,7 @@ This tutorial simulates a data set to demonstrate the functions provided by FRpr
 
 ```{r example, eval=FALSE}
 # load the package
-# library(FEprovideR)
-## basic example code
+library(FEprovideR)
 
 # other imports
 library(Matrix)
@@ -85,6 +84,7 @@ Conduct hypothesis tests on the estimated standardized readmission ratios (SSRs)
 ```{r example.hypothesis.testing, eval=FALSE}
 # hypothesis testing
 null <- "median"
+n <- 10000
 score.fe <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, test="score", null, alpha)
 exact.pb <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, test="exact.poisbinom", null, alpha)
 exact.bs <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, test="exact.bootstrap", null, alpha, n)
@@ -96,17 +96,17 @@ Compute confidence intervals for the estimated SSRs:
 ```{r example.confindence.intervals, eval=FALSE}
 # confidence intervals
 confint.df <- confint.fe.prov(fe.ls, parm = "all", level = 0.95, hospital_prepared, Y.char, Z.char, prov.char)
-confint.df <- confint.fe.prov(fe.ls, parm = "all", level = 0.99, hospital_prepared, Y.char, Z.char, prov.char)
 confint.df <- confint.fe.prov(fe.ls, parm = "all", level = 0.90, hospital_prepared, Y.char, Z.char, prov.char)
+confint.df <- confint.fe.prov(fe.ls, level = 0.90, data = hospital_prepared, Y.char = Y.char, Z.char = Z.char, prov.char = prov.char)
 ```
 
 ## Funnel plots for SRRs (Standardized readmission ratios)
 
 ```{r funnel.plot.prep, eval=FALSE}
-# Prepare funnel plot inputs
-target <- 1
-alphas <- c(0.01, 0.05, 0.1)
-input.dis <- data.frame(ID=data.prepared[data.prepared$included==1, prov.char], prob=fe.ls$Exp)
+# format input data for funnel plot
+input.dis <- data.frame(ID=hospital_prepared[hospital_prepared$included==1, prov.char],
+                        prob=fe.ls$Exp)
+input.prov <- data.frame(SRR=fe.ls$df.prov$SRR, flag=score.fe$flag)
 ```
 
 Score test based funnel plot:
@@ -115,27 +115,5 @@ Score test based funnel plot:
 input.prov <- data.frame(SRR=fe.ls$df.prov$SRR, flag=score.fe$flag)
 funnel.SRR(input.dis, input.prov, target, alphas, type="FE.score")
 ```
-
-Exact test based funnel plot:
-
-```{r funnel.exact.test, eval=FALSE}
-input.prov <- data.frame(SRR=fe.ls$df.prov$SRR, flag=exact.pb$flag)
-funnel.SRR(input.dis, input.prov, target, alphas, type="FE.score")
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

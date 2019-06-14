@@ -44,7 +44,7 @@
 #' @export
 
 confint.fe.prov <- function(object, parm = "all", level = 0.95, data, Y.char, Z.char, prov.char,...) {
-  if(!(parm == "all")) stop("This method is only implemented for all parameters.
+  if(!is.null(parm) & !(parm == "all")) stop("This method is only implemented for all parameters.
                             You cannot get CI's for a subset.")
   fe.ls <- object
   alpha <- 1 - level
