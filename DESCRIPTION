@@ -5,7 +5,7 @@ Authors@R: c(
     person(given = "Kevin(Zhi)", family = "He", role = c("aut"), email = "kevinhe@umich.edu"),
     person(given = "Wenbo", family = "Wu", role = c("aut"), email = "wenbowu@umich.edu"),
     person(given = "Michael", family = "Kleinsasser", role = c("cre"), email = "mkleinsa@umich.edu"))
-Description: A structured profile likelihood algorithm for the logistic fixed effects model and an approximate EM algorithm for the logistic mixed effects model. 
+Description: A structured profile likelihood algorithm for the logistic fixed effects model and an approximate expectation maximization (EM) algorithm for the logistic mixed effects model. Based on He, K., Kalbfleisch, J.D., Li, Y. and Li, Y. (2013) <doi:10.1007/s10985-013-9264-6>
 License: GPL-2
 Imports: ggplot2, Matrix, poibin
 Encoding: UTF-8
