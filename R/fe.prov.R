@@ -19,6 +19,8 @@
 #'   \item \code{beta:} a vector of fixed effect estimates
 #'   \item \code{Obs:} a vector of responses for included providers
 #'   \item \code{Exp:} a vector of expected probabilities of readmission within 30 days of discharge
+#'   \item \code{iter:} number of iterations needed for convergence
+#'   \item \code{beta.max.diff:} value of the stopping criterion
 #'   \item \code{df.prov:}
 #' }
 #' \code{df.prov} is a \code{data.frame} of provider-level information with the following items:
@@ -69,11 +71,12 @@ fe.prov <- function(data, Y.char, Z.char, prov.char, tol=1e-5, null="median"){
   iter <- 0
   bound <- 20
   beta.max.diff <- 100 # initialize stop criterion
-  cat("Implementing Newton-Raphson algorithm for fixed provider effects model ...")
+  # commented cat for CRAN standards
+  # cat("Implementing Newton-Raphson algorithm for fixed provider effects model ...")
 
   while (iter<=max.iter & beta.max.diff>=tol) {
     iter <- iter + 1
-    cat(paste0("\n Iter ",iter,":"))
+    # cat(paste0("\n Iter ",iter,":")) # remove pringing to console
     # provider effect
     gamma.obs <- rep(gamma.prov, n.prov)
     Z.beta <- Z%*%beta
@@ -92,9 +95,11 @@ fe.prov <- function(data, Y.char, Z.char, prov.char, tol=1e-5, null="median"){
     beta.new <- beta + as.numeric(solve(beta.info)%*%beta.score) # pmin(pmax(, -bound), bound)
     beta.max.diff <- max(abs(beta-beta.new)) # stopping criterion
     beta <- beta.new
-    cat(paste0(" Inf norm of running diff in est covar coef is ",round(beta.max.diff,digits=8),";"))
+    # removed printing to console for CRAN standards
+    # cat(paste0(" Inf norm of running diff in est covar coef is ",round(beta.max.diff,digits=8),";"))
   }
-  cat(paste("\n Newton-Raphson algorithm converged after",iter,"iterations! \n"))
+  # removed printing to console
+  # cat(paste("\n Newton-Raphson algorithm converged after",iter,"iterations! \n"))
   gamma.prov[gamma.prov==bound] <- Inf; gamma.prov[gamma.prov==-bound] <- -Inf
   Z.beta <- as.matrix(data[,Z.char]) %*% beta
   gamma.null <- ifelse(null=="median", median(gamma.prov),
@@ -106,7 +111,8 @@ fe.prov <- function(data, Y.char, Z.char, prov.char, tol=1e-5, null="median"){
                         Exp=sapply(split(Exp,data[,prov.char]),sum))
   df.prov$SRR <- df.prov$Obs / df.prov$Exp
   df.prov$gamma <- gamma.prov
-  return(structure(list(beta=beta, Obs=data[, Y.char], Exp=Exp, df.prov=df.prov), class = "fe.prov"))
+  return(structure(list(beta=beta, Obs=data[, Y.char], Exp=Exp, df.prov=df.prov,
+                        iter = iter, beta.max.diff = beta.max.diff), class = "fe.prov"))
   #    beta: a vector of fixed effect estimates
   #     Obs: a vector of responses for included providers
   #     Exp: a vector of expected probs of readmission within 30 days of discharge

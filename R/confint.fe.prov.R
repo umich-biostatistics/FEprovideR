@@ -18,7 +18,7 @@
 #' parameter, each column gives a different bound.
 #'
 #' @seealso \code{\link{fe.data.prep}},  \code{\link{fe.prov}},   \code{\link{test.fe.prov}},
-#' \code{\link{funnel.SRR}},   \code{\link{confint.fe.prov}}
+#' \code{\link{funnel.SRR}}
 #'
 #' @references He, K., Kalbfleisch, J.D., Li, Y. and Li, Y., 2013. Evaluating hospital
 #' readmission rates in dialysis facilities; adjusting for hospital effects. Lifetime data

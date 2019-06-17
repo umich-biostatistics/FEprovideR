@@ -25,6 +25,8 @@ An object of class \code{fe.prov}, which is just a \code{List} object with the f
 \item \code{beta:} a vector of fixed effect estimates
 \item \code{Obs:} a vector of responses for included providers
 \item \code{Exp:} a vector of expected probabilities of readmission within 30 days of discharge
+\item \code{iter:} number of iterations needed for convergence
+\item \code{beta.max.diff:} value of the stopping criterion
 \item \code{df.prov:}
 }
 \code{df.prov} is a \code{data.frame} of provider-level information with the following items:

@@ -44,6 +44,6 @@ readmission rates in dialysis facilities; adjusting for hospital effects. Lifeti
 analysis, 19(4), pp.490-512.
 }
 \seealso{
-\code{\link{fe.data.prep}},  \code{\link{fe.prov}},   \code{\link{test.fe.prov}},
+\code{\link{fe.prov}},   \code{\link{test.fe.prov}},
 \code{\link{funnel.SRR}},   \code{\link{confint.fe.prov}}
 }

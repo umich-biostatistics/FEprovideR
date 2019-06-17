@@ -11,7 +11,7 @@
 #' @param prov.char name of provider IDs variable as a character string
 #' @param test string denoting hypothesis test to be conducted. Currently, options
 #' include "exact.binom", "exact.poisbinom", "exact.bootstrap", "score". The default
-#' is \code{test=score}
+#' is \code{test="score"}
 #' @param null use median for null comparison
 #' @param alpha alpha level for the CIs
 #' @param n number of bootstrap draws
@@ -19,7 +19,7 @@
 #' @return Returns a \code{data.frame} of the results of the test for each provider
 #' with attributes:
 #' \itemize{
-#'   \item{flag:} Either "1" for p<alpha/2, "0" p<=1-alpha/2 and p<alpha/2, or "1" for neither
+#'   \item{flag:} Either "1" for p<alpha/2, "0" p<=1-alpha/2 and p<alpha/2, or "-1" for neither
 #'   \item{p:} p-value for the hypothesis test of the model parameter
 #' }
 #'
