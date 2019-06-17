@@ -46,7 +46,8 @@ data(hospital_prepared) # build in data set
 fe.ls <- fe.prov(hospital_prepared, Y.char, Z.char, prov.char, tol) # model fitting
 
 # confidence intervals
-confint.fe.prov(fe.ls, parm = "all", level = 0.95, hospital_prepared, Y.char, Z.char, prov.char)
+intervals <- confint.fe.prov(fe.ls, parm = "all", level = 0.95,
+                             hospital_prepared, Y.char, Z.char, prov.char)
 
 }
 \references{
