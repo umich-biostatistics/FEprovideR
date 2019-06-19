@@ -36,7 +36,7 @@
 #' fe.ls <- fe.prov(hospital_prepared, Y.char, Z.char, prov.char, tol) # model fitting
 #'
 #' # confidence intervals
-#' intervals <- confint.fe.prov(fe.ls, parm = "all", level = 0.95,
+#' confint.fe.prov(fe.ls, parm = "all", level = 0.95,
 #'                              hospital_prepared, Y.char, Z.char, prov.char)
 #'
 #' @export confint.fe.prov

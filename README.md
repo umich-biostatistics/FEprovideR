@@ -10,8 +10,8 @@
 <!-- badges: end -->
 
 A stuctured profile likelihood algorithm for the logistic fixed effects
-model and an aproximate EM algorithm for the logistic mixed effects
-model.
+model and an approximate expectation maximization (EM) algorithm for the
+logistic mixed effects model.
 
 ## Installation
 
@@ -22,6 +22,12 @@ with:
 ``` r
 install.packages("devtools") # you need devtools to install packages from Github
 devtools::install_github("umich-biostatistics/FEprovideR")
+```
+
+You can install directly from CRAN with:
+
+``` r
+install.packages("FEprovideR")
 ```
 
 ## Example
@@ -50,6 +56,16 @@ beta <- c(1,0.5,-1)
 Y.char <- 'Y'
 prov.char <- 'prov.ID'
 Z.char <- paste0('z', 1:length(beta))
+sim.fe.prov <- function(m, prov.size, gamma, beta, Y.char, Z.char, prov.char) {
+  N <- sum(prov.size) # total number of discharges
+  gamma.dis <- rep(gamma, times=prov.size)
+  prov <- rep(1:m, times=prov.size) # provider IDs
+  Z <- matrix(rnorm(N*length(beta)), ncol=length(beta))
+  Y <- rbinom(N, 1, plogis(gamma.dis+Z%*%beta))
+  data <- as.data.frame(cbind(Y, prov, Z))
+  colnames(data) <- c(Y.char, prov.char, Z.char) 
+  return(data)
+}
 data <- sim.fe.prov(m, prov.size, gamma, beta, Y.char, Z.char, prov.char)
 ```
 
@@ -82,6 +98,7 @@ ratios (SSRs):
 # hypothesis testing
 null <- "median"
 n <- 10000
+alpha <- 0.05
 score.fe <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, test="score", null, alpha)
 exact.pb <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, test="exact.poisbinom", null, alpha)
 exact.bs <- test.fe.prov(hospital_prepared, fe.ls, Y.char, Z.char, prov.char, test="exact.bootstrap", null, alpha, n)
@@ -109,6 +126,8 @@ input.prov <- data.frame(SRR=fe.ls$df.prov$SRR, flag=score.fe$flag)
 Score test based funnel plot:
 
 ``` r
+target <- c(1)
+alphas <- c(0.1, 0.5, 0.01)
 input.prov <- data.frame(SRR=fe.ls$df.prov$SRR, flag=score.fe$flag)
 funnel.SRR(input.dis, input.prov, target, alphas, type="FE.score")
 ```
