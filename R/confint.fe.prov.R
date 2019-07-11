@@ -57,9 +57,9 @@ confint.fe.prov <- function(object, parm = "all", level = 0.95, data, Y.char, Z.
 
   CL.finite <- function(df) {
     UL.gamma <- function(Gamma)
-      ppoibin(Obs-1,plogis(Gamma+Z.beta))+0.5*dpoibin(Obs-1,plogis(Gamma+Z.beta))-alpha/2
+      ppoibin(Obs-1,plogis(Gamma+Z.beta))+0.5*dpoibin(Obs,plogis(Gamma+Z.beta))-alpha/2
     LL.gamma <- function(Gamma)
-      1-ppoibin(Obs,plogis(Gamma+Z.beta))+0.5*dpoibin(Obs-1,plogis(Gamma+Z.beta))-alpha/2
+      1-ppoibin(Obs,plogis(Gamma+Z.beta))+0.5*dpoibin(Obs,plogis(Gamma+Z.beta))-alpha/2
     prov <- ifelse(length(unique(df[,prov.char]))==1, unique(df[,prov.char]),
                    stop("Number of providers involved NOT equal to one!"))
     Z.beta <- as.matrix(df[,Z.char])%*%beta
