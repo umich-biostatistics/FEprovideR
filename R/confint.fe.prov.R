@@ -44,9 +44,22 @@
 #' @importFrom poibin dpoibin
 #' @export
 
-confint.fe.prov <- function(object, parm = "all", level = 0.95, data, Y.char, Z.char, prov.char,...) {
-  if(!is.null(parm) & !(parm == "all")) stop("This method is only implemented for all parameters.
-                            You cannot get CI's for a subset.")
+confint.fe.prov <- function(object, data, Y.char, Z.char, prov.char, parm = "all", level = 0.95,...) {  
+  prov.all <- unique(data[data$included==1,prov.char])
+  if(is.null(parm) | identical(parm,"all")) {
+    data <- data[data$included==1, ]
+  } else {
+    presence.parm <- parm %in% prov.all
+    if (max(presence.parm)==0) {
+      stop("All provider ID(s) misspecified!", call.=F)
+    } else if (length(parm[!presence.parm])==0) {
+      data <- data[data[,prov.char] %in% parm[presence.parm], ]
+    } else {
+      warning("Provider ID(s) '",paste(parm[!presence.parm], collapse="', '"), 
+              "' misspecified with no confidence intervals!", call.=F, immediate.=T)
+      data <- data[data[,prov.char] %in% parm[presence.parm], ]
+    }
+  }
   fe.ls <- object
   alpha <- 1 - level
   data <- data[data$included==1, ]
