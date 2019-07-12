@@ -109,9 +109,12 @@ Compute confidence intervals for the estimated SSRs:
 
 ``` r
 # confidence intervals
-confint.df <- confint.fe.prov(fe.ls, parm = "all", level = 0.95, hospital_prepared, Y.char, Z.char, prov.char)
+confint.df <- confint.fe.prov(fe.ls, parm = "all", level = 0.88, hospital_prepared, Y.char, Z.char, prov.char)
 confint.df <- confint.fe.prov(fe.ls, parm = "all", level = 0.90, hospital_prepared, Y.char, Z.char, prov.char)
 confint.df <- confint.fe.prov(fe.ls, level = 0.90, data = hospital_prepared, Y.char = Y.char, Z.char = Z.char, prov.char = prov.char)
+
+# CIs for a subset of providers
+confint.df3 <- confint.fe.prov(fe.ls, hospital_prepared, Y.char, Z.char, prov.char, parm=c(1,2,50), level=0.95) 
 ```
 
 ## Funnel plots for SRRs (Standardized readmission ratios)

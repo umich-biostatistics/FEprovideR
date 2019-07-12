@@ -5,8 +5,9 @@
 #' \href{https://github.com/umich-biostatistics/FEprovideR}{Github} for a tutorial.
 #'
 #' @param object fitted model object (fit using \code{fe.prov})
-#' @param parm parameter names. Since their are so many parameters, the default is
-#'  \code{"all"}, which is currently the only option available
+#' @param parm provider IDs for which confidence intervals are desired. The default
+#' is \code{"all"}. Specify a subset of privider effects with a numeric vector of
+#' provider IDs. For example, \code{parm=c(1,20)} for providers 1 and 20.
 #' @param level confidence level (default is \code{0.95})
 #' @param data prepared \code{data.frame}. Use \code{\link{fe.data.prep}} to prepare the raw data
 #' @param Y.char Y.char name of the response variable from \code{data} as a character string
@@ -44,7 +45,7 @@
 #' @importFrom poibin dpoibin
 #' @export
 
-confint.fe.prov <- function(object, data, Y.char, Z.char, prov.char, parm = "all", level = 0.95,...) {  
+confint.fe.prov <- function(object, data, Y.char, Z.char, prov.char, parm = "all", level = 0.95,...) {
   prov.all <- unique(data[data$included==1,prov.char])
   if(is.null(parm) | identical(parm,"all")) {
     data <- data[data$included==1, ]
@@ -55,7 +56,7 @@ confint.fe.prov <- function(object, data, Y.char, Z.char, prov.char, parm = "all
     } else if (length(parm[!presence.parm])==0) {
       data <- data[data[,prov.char] %in% parm[presence.parm], ]
     } else {
-      warning("Provider ID(s) '",paste(parm[!presence.parm], collapse="', '"), 
+      warning("Provider ID(s) '",paste(parm[!presence.parm], collapse="', '"),
               "' misspecified with no confidence intervals!", call.=F, immediate.=T)
       data <- data[data[,prov.char] %in% parm[presence.parm], ]
     }
