@@ -4,11 +4,17 @@
 \alias{confint.fe.prov}
 \title{Compute confidence intervals for fitted model}
 \usage{
-\method{confint}{fe.prov}(object, data, Y.char, Z.char, prov.char,
-  parm = "all", level = 0.95, ...)
+\method{confint}{fe.prov}(object, parm = "all", level = 0.95, data,
+  Y.char, Z.char, prov.char, ...)
 }
 \arguments{
 \item{object}{fitted model object (fit using \code{fe.prov})}
+
+\item{parm}{provider IDs for which confidence intervals are desired. The default
+is \code{"all"}. Specify a subset of privider effects with a numeric vector of
+provider IDs. For example, \code{parm=c(1,20)} for providers 1 and 20.}
+
+\item{level}{confidence level (default is \code{0.95})}
 
 \item{data}{prepared \code{data.frame}. Use \code{\link{fe.data.prep}} to prepare the raw data}
 
@@ -17,12 +23,6 @@
 \item{Z.char}{Z.char names of covariates from \code{data} as vector of character strings}
 
 \item{prov.char}{name of provider IDs variable as a character string}
-
-\item{parm}{provider IDs for which confidence intervals are desired. The default
-is \code{"all"}. Specify a subset of privider effects with a numeric vector of
-provider IDs. For example, \code{parm=c(1,20)} for providers 1 and 20.}
-
-\item{level}{confidence level (default is \code{0.95})}
 
 \item{...}{extra arguments to be passed to confint}
 }

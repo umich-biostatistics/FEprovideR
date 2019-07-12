@@ -45,7 +45,7 @@
 #' @importFrom poibin dpoibin
 #' @export
 
-confint.fe.prov <- function(object, data, Y.char, Z.char, prov.char, parm = "all", level = 0.95,...) {
+confint.fe.prov <- function(object, parm = "all", level = 0.95, data, Y.char, Z.char, prov.char,...) {
   prov.all <- unique(data[data$included==1,prov.char])
   if(is.null(parm) | identical(parm,"all")) {
     data <- data[data$included==1, ]
