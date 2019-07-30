@@ -1,6 +1,6 @@
 Package: FEprovideR
 Title: Fixed Effects Logistic Model with High-Dimensional Parameters
-Version: 0.1.0
+Version: 1.1
 Authors@R: c(
     person(given = "Kevin(Zhi)", family = "He", role = c("aut"), email = "kevinhe@umich.edu"),
     person(given = "Wenbo", family = "Wu", role = c("aut"), email = "wenbowu@umich.edu"),
